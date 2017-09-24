@@ -52,7 +52,7 @@ public class Transformer {
   		return this.rank;
   	}
 
-  	public boolean isAlive() {
+  	public boolean isDead() {
   		return this.destroyed;
   	}
 

@@ -13,7 +13,7 @@ public class BattleArena {
 	    ArrayList<Transformer> autobotList = new ArrayList<Transformer>();
 	    ArrayList<Transformer> decepticonList = new ArrayList<Transformer>();
 
-	    for (int i = 0; i < 8; i++) {
+	    for (int i = 0; i < 12; i++) {
 	    		Transformer checkTransformerTeam = transformersRoster.get(i);
 
 	    		if (checkTransformerTeam.getTeam() == "A") {
@@ -31,6 +31,7 @@ public class BattleArena {
 	    ArrayList<Transformer> rankedAutobotsList = sortByRank(dynamicAbListSize, autobotList);
 	    ArrayList<Transformer> rankedDecepticonsList = sortByRank(dynamicDcListSize, decepticonList);
 
+	    // Step 4: let's battle!
 	    battle(rankedAutobotsList, rankedDecepticonsList);
 	}
 	
@@ -63,18 +64,18 @@ public class BattleArena {
 	    transformersRoster.add(optimisPrime);
 	    transformersRoster.add(silverbolt);
 	    transformersRoster.add(omegaSupreme);
-	    //transformersRoster.add(bumblebee);
+	    transformersRoster.add(bumblebee);
 	    transformersRoster.add(smokescreen);
 	    
-	    //transformersRoster.add(megatron);
+	    transformersRoster.add(megatron);
 	    transformersRoster.add(starscream);
-	    //transformersRoster.add(sixshot);
+	    transformersRoster.add(sixshot);
 	    transformersRoster.add(galvatron);
 
-	    //transformersRoster.add(predaking);
+	    transformersRoster.add(predaking);
 	    transformersRoster.add(overkill);
 	    transformersRoster.add(frenzy);
-	    //transformersRoster.add(blot);
+	    transformersRoster.add(blot);
 
 	    return transformersRoster;
 	}
@@ -148,6 +149,9 @@ public class BattleArena {
 		Transformer opponentA;
 		Transformer opponentD;
 		ArrayList<Transformer> survivingMembers = new ArrayList<Transformer>();
+		int autobotWins = 0;
+		int decepticonWins = 0;
+		String winningTeam;
 		
 		for (int b = 0; b < numBattles; b++) {
 			opponentA = autobots.get(b);
@@ -160,9 +164,11 @@ public class BattleArena {
 				return 0;
 			} else if (opponentA.getName() == "Optimis Prime") {
 				opponentD.isNowDestroyed();
+				autobotWins = autobotWins + 1;
 				System.out.print(opponentD.getName() + " has been defeated by " + opponentA.getName() + ".\n");
 			} else if (opponentD.getName() == "Predaking") {
 				opponentA.isNowDestroyed();
+				decepticonWins = decepticonWins + 1;
 				System.out.print(opponentA.getName() + " has been defeated by " + opponentD.getName() + ".\n");
 			} else {
 				
@@ -170,20 +176,25 @@ public class BattleArena {
 				if ((opponentA.getCourage() - opponentD.getCourage() >= 4) && (opponentA.getStrength() - opponentD.getStrength() >= 3)) {
 					// autobot has scared his opponent away
 					opponentD.isNowDestroyed();
+					autobotWins = autobotWins + 1;
 					System.out.print(opponentA.getName() + " has scared away " + opponentD.getName() + ".\n");
 				} else if ((opponentD.getCourage() - opponentA.getCourage() >= 4) && (opponentD.getStrength() - opponentA.getStrength() >= 3)) {
 					// decepticon has scared his opponent away
 					opponentA.isNowDestroyed();
+					decepticonWins = decepticonWins + 1;
 					System.out.print(opponentD.getName() + " has scared away " + opponentA.getName() + ".\n");
 					
 			// second conditional is for test of skill
 				} else if ((opponentA.getSkill() - opponentD.getSkill() >= 3)) {
 					opponentD.isNowDestroyed();
+					autobotWins = autobotWins + 1;
 					System.out.print(opponentA.getName() + " has bested " + opponentD.getName() + " in skills.\n");
 				} else if ((opponentD.getSkill() - opponentA.getSkill() >= 3)) {
 					opponentA.isNowDestroyed();
+					decepticonWins = decepticonWins + 1;
 					System.out.print(opponentD.getName() + " has bested " + opponentA.getName() + " in skills.\n");
 				} else  {
+					
 			// third conditional just looks at their rating based on 5 stats
 					int ratingA = opponentA.getTransformerRating();
 					int ratingD = opponentD.getTransformerRating();
@@ -194,15 +205,43 @@ public class BattleArena {
 						System.out.print(opponentA.getName() + " has equal rating to " + opponentD.getName() + " . Both perished.\n");
 					} else if (ratingA > ratingD) {
 						opponentD.isNowDestroyed();
+						autobotWins = autobotWins + 1;
 						System.out.print(opponentA.getName() + " has won with a higher rating than " + opponentD.getName() + ".\n");
 					} else {
 						opponentA.isNowDestroyed();
+						decepticonWins = decepticonWins + 1;
 						System.out.print(opponentD.getName() + " has won with a higher rating than " + opponentD.getName() + ".\n");
 					}
 				}
 			}
 		}
 
+			// determine winning team and compile list of survivors from losing team
+		if (autobotWins == decepticonWins) {
+			winningTeam = "Both teams won an equal number of battles.";
+		} else if (autobotWins > decepticonWins) {
+			winningTeam = "Autobots have won the battle!";
+				// enter into list surviving members of Decepticons
+			for (int d = 0; d < deceListSize; d++) {
+				Transformer temp = decepticons.get(d);
+				
+				if (!temp.isDead()) {
+					survivingMembers.add(temp);
+				}
+			}
+		} else {
+			winningTeam = "Decepticons have won the battle!";
+			 	// enter into list surviving members of Autobots
+			for (int a = 0; a < autoListSize; a++) {
+				Transformer temp = autobots.get(a);
+								
+				if (!temp.isDead()) {
+					survivingMembers.add(temp);
+				}			
+			}
+		}
+		
+		displayBattleResults(numBattles, winningTeam, survivingMembers);
 		
 		// display number of battles (numBattles)
 		// display winning team (most battles won/opponents destroyed)
@@ -217,15 +256,18 @@ public class BattleArena {
 	 * @param survivors
 	 */
 	private static void displayBattleResults(int numberOfBattles, String winningTeam, ArrayList<Transformer> survivors) {
+		System.out.print(winningTeam + "\n\n");
 		System.out.print("There were a total of " + numberOfBattles + " battles." + "\n");
 		System.out.print(winningTeam + "\n");
 		
 		if (survivors.isEmpty()) {
 			System.out.print("There were no survivors");
 		} else {
+			System.out.print("Survivors from the losing team: ");
 			for (int i = 0; i < survivors.size(); i++) {
-				System.out.print(survivors.get(i).getName());
+				System.out.print(survivors.get(i).getName() + ", ");
 			}
+			
 		}
 	}
 }
