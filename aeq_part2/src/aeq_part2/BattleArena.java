@@ -24,7 +24,6 @@ public class BattleArena {
 	    }
 	    
 	    // Step 3: sort both arrays based on the rank attribute of the Transformer class
-
 	    int dynamicAbListSize = autobotList.size();
 	    int dynamicDcListSize = decepticonList.size();
 	    
@@ -32,15 +31,15 @@ public class BattleArena {
 	    ArrayList<Transformer> rankedDecepticonsList = sortByRank(dynamicDcListSize, decepticonList);
 
 	    for (int v = 0; v < rankedAutobotsList.size(); v++) {
-	    		System.out.print(rankedAutobotsList.get(v).getName()); 
+	    		System.out.print(rankedAutobotsList.get(v).getName() + " "); 
 	    }
 	    
 	    System.out.print("\n");
 
 	    for (int z = 0; z < rankedDecepticonsList.size(); z++) {
-	    		System.out.print(rankedDecepticonsList.get(z).getName()); 
+	    		System.out.print(rankedDecepticonsList.get(z).getName() + " "); 
 	    }
-	  }
+	}
 	
 	/**
 	 * Creates Transformer objects and adds to an ArrayList
@@ -81,37 +80,55 @@ public class BattleArena {
 	    transformersRoster.add(sixshot);
 
 	    return transformersRoster;
-	  }
+	}
 
-	  private static ArrayList<Transformer> sortByRank(int listSize, ArrayList<Transformer> unsortedTeam) {
-	    int dynamicAbListSize = listSize;
+	/**
+	 * Sorts the list of Transformers based on their rank
+	 * @param listSize: The list size of the autobots or decepticons
+	 * @param unsortedTeam: Unsorted ArrayList of autobots or decepticons
+	 * @return a sorted ArrayList of autobots or decepticons
+	 */
+	private static ArrayList<Transformer> sortByRank(int listSize, ArrayList<Transformer> unsortedTeam) {
+		int dynamicAbListSize = listSize;
 	    ArrayList<Transformer> sortedTeam = new ArrayList<Transformer>();
 
 	    while (!unsortedTeam.isEmpty()) {       
-	      Transformer currentBot = unsortedTeam.get(0);
-	      int currentMaxRank = currentBot.getRank();
-	      int currentIndex = unsortedTeam.indexOf(currentBot);
+	    
+	    		Transformer currentBot = unsortedTeam.get(0);
+	    		int currentMaxRank = currentBot.getRank();
+	    		int currentIndex = unsortedTeam.indexOf(currentBot);
 	      
-	      for (int a = 0; a < dynamicAbListSize; a++) {
+	    		for (int a = 0; a < dynamicAbListSize; a++) {
 	        
-	        Transformer tempAb = unsortedTeam.get(a);
-	        int tempRank = tempAb.getRank();
+		        Transformer tempAb = unsortedTeam.get(a);
+		        int tempRank = tempAb.getRank();
 
-	        if (tempRank > currentMaxRank) {
-	          currentMaxRank = tempRank;
-	          currentIndex = unsortedTeam.indexOf(tempAb);
-	        }
-	      }
+		        if (tempRank > currentMaxRank) {
+		          currentMaxRank = tempRank;
+		          currentIndex = unsortedTeam.indexOf(tempAb);
+		        }
+	    		}
 	      
-	      sortedTeam.add(unsortedTeam.get(currentIndex));
-	      unsortedTeam.remove(currentIndex);
-	      dynamicAbListSize = unsortedTeam.size();
-	    }
+		      sortedTeam.add(unsortedTeam.get(currentIndex));
+		      unsortedTeam.remove(currentIndex);
+		      dynamicAbListSize = unsortedTeam.size();
+		}
 
 	    return sortedTeam;
-	  }
+	}
 
-	  private static void battle(ArrayList<Transformer> autobots, ArrayList<Transformer> decepticons) {
+	private static void battle(ArrayList<Transformer> autobots, ArrayList<Transformer> decepticons) {
+		// Step 1: Determine the shorter list, if any
+		
+		// Step 2: For loop, create matches based on their indices since they're sorted by rank
+		
+		// Step 3: Determine victor via various requirements
+				// vs Optimis Prime or PredaKing --> opponent is always destroyed
+				// >= 4 for Courage or >=3 for strength
+				// >= 3 points for Skill
+				// highest overall rating is the winner
+				// both destroyed if a tie ensues
+		// if OP or Predaking fight >>> everyone dies
 	    
-	  }
+	}
 }
