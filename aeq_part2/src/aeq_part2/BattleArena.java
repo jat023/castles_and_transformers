@@ -6,14 +6,14 @@ public class BattleArena {
 
 	public static void main(String[] args) {
 		
-		  // Step 1: Create roster list of transformers
+		  // Step 1: Create master list of transformers
 	    ArrayList<Transformer> transformersRoster = createTransformers();
 	    
-	      // Step 2: read them all into separate arrays (teams) for Autobots vs Decepticons
+	      // Step 2: separate the master list into arrays (teams) for Autobots vs Decepticons
 	    ArrayList<Transformer> autobotList = new ArrayList<Transformer>();
 	    ArrayList<Transformer> decepticonList = new ArrayList<Transformer>();
 
-	    for (int i = 0; i < 12; i++) {
+	    for (int i = 0; i < 9; i++) {
 	    		Transformer checkTransformerTeam = transformersRoster.get(i);
 
 	    		if (checkTransformerTeam.getTeam() == "A") {
@@ -23,22 +23,15 @@ public class BattleArena {
 	    		}
 	    }
 	    
-	    // Step 3: sort both arrays based on the rank attribute of the Transformer class
+	    // Step 3: sort both arrays (team) based on the attribute of rank, a variable 
+	    			// within the Transformer class
 	    int dynamicAbListSize = autobotList.size();
 	    int dynamicDcListSize = decepticonList.size();
 	    
 	    ArrayList<Transformer> rankedAutobotsList = sortByRank(dynamicAbListSize, autobotList);
 	    ArrayList<Transformer> rankedDecepticonsList = sortByRank(dynamicDcListSize, decepticonList);
 
-	    for (int v = 0; v < rankedAutobotsList.size(); v++) {
-	    		System.out.print(rankedAutobotsList.get(v).getName() + " "); 
-	    }
-	    
-	    System.out.print("\n");
-
-	    for (int z = 0; z < rankedDecepticonsList.size(); z++) {
-	    		System.out.print(rankedDecepticonsList.get(z).getName() + " "); 
-	    }
+	    battle(rankedAutobotsList, rankedDecepticonsList);
 	}
 	
 	/**
@@ -56,13 +49,16 @@ public class BattleArena {
 	    Transformer smokescreen = new Transformer("Smokescreen", "A", 4, 9, 7, 6, 6, 8, 7, 9);
 	    Transformer silverbolt = new Transformer("Silverbolt", "A", 6, 8, 9, 8, 8, 8, 8, 5);
 	    
-	    Transformer overkill = new Transformer("Overkill", "D", 8, 5, 2, 8, 5, 6, 6, 5);
+	    Transformer megatron = new Transformer("Megatron", "D", 10, 10, 4, 8, 10, 9, 10, 9);
 	    Transformer starscream = new Transformer("Starscream", "D", 7, 9, 10, 7, 9, 9, 8, 8);
 	    Transformer galvatron = new Transformer("Galvatron", "D", 10, 9, 9, 10, 9, 9, 9, 10);
-	    Transformer blot = new Transformer("Blot", "D", 9, 2, 2, 10, 4, 10, 6, 5);
-	    Transformer frenzy = new Transformer("Frenzy", "D", 3, 6, 3, 6, 5, 10, 9, 6);
-	    Transformer megatron = new Transformer("Megatron", "D", 10, 10, 4, 8, 10, 9, 10, 9);
 	    Transformer sixshot = new Transformer("Sixshot", "D", 10, 9, 4, 9, 7, 8, 9, 8);
+	    
+	    Transformer predaking = new Transformer("Predaking", "D", 10, 5, 10, 8, 7, 9, 9, 8);
+	    Transformer overkill = new Transformer("Overkill", "D", 8, 5, 2, 8, 5, 6, 6, 5);
+	    Transformer blot = new Transformer("Blot", "D", 9, 2, 2, 10, 4, 10, 6, 5); 
+	    Transformer frenzy = new Transformer("Frenzy", "D", 3, 6, 3, 6, 5, 10, 9, 6);
+	    
 
 	    		// Add objects to ArrayList
 	    transformersRoster.add(optimisPrime);
@@ -72,12 +68,13 @@ public class BattleArena {
 	    transformersRoster.add(silverbolt);
 	    
 	    transformersRoster.add(overkill);
-	    transformersRoster.add(starscream);
-	    transformersRoster.add(galvatron);
+	    //transformersRoster.add(starscream);
+	    //transformersRoster.add(galvatron);
 	    transformersRoster.add(blot);
 	    transformersRoster.add(frenzy);
-	    transformersRoster.add(megatron);
-	    transformersRoster.add(sixshot);
+	    //transformersRoster.add(megatron);
+	    //transformersRoster.add(sixshot);
+	    transformersRoster.add(predaking);
 
 	    return transformersRoster;
 	}
@@ -117,10 +114,43 @@ public class BattleArena {
 	    return sortedTeam;
 	}
 
+	/**
+	 * The Battle between Autobots and Decepticons have begun!
+	 * @param autobots
+	 * @param decepticons
+	 */
 	private static void battle(ArrayList<Transformer> autobots, ArrayList<Transformer> decepticons) {
-		// Step 1: Determine the shorter list, if any
+		// Step 1: Determine the shorter list, if any; this determines number of battles
+		ArrayList<Transformer> autoList = autobots;
+		ArrayList<Transformer> deceList = decepticons;
 		
+		int autoListSize = autobots.size();
+		int deceListSize = deceList.size();
+		int numBattles = 0;
+		
+		if ((autoListSize - deceListSize) < 0) {
+			// autobots have smaller team
+			numBattles = autoListSize;
+		} else {
+			// decepticons have smaller team
+			numBattles = deceListSize;
+		}
+			
 		// Step 2: For loop, create matches based on their indices since they're sorted by rank
+		
+		Transformer opponentA;
+		Transformer opponentD;
+		ArrayList<Transformer> survivingMembers = new ArrayList<Transformer>();
+		
+		for (int b = 0; b < numBattles; b++) {
+			opponentA = autobots.get(b);
+			opponentD = decepticons.get(b);
+			
+			if (opponentA.getName() == "Optimis Prime" && opponentD.getName() == "Predaking") {
+			
+				displayBattleResults(numBattles, "All bots perished.", survivingMembers);
+			}
+		}
 		
 		// Step 3: Determine victor via various requirements
 				// vs Optimis Prime or PredaKing --> opponent is always destroyed
@@ -129,6 +159,23 @@ public class BattleArena {
 				// highest overall rating is the winner
 				// both destroyed if a tie ensues
 		// if OP or Predaking fight >>> everyone dies
+		
+		// return numBattles
+		// return winning team (most battles won/opponents destroyed)
+		// return survivors of losing team
 	    
+	}
+	
+	private static void displayBattleResults(int numberOfBattles, String winningTeam, ArrayList<Transformer> survivors) {
+		System.out.print("There were a total of " + numberOfBattles + " battles." + "\n");
+		System.out.print(winningTeam + "\n");
+		
+		if (survivors.isEmpty()) {
+			System.out.print("There were no survivors");
+		} else {
+			for (int i = 0; i < survivors.size(); i++) {
+				System.out.print(survivors.get(i).getName());
+			}
+		}
 	}
 }
