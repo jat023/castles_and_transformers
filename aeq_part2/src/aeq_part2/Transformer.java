@@ -24,7 +24,7 @@ public class Transformer {
 	    this.destroyed = false;
   	}
 
-  	public int returnTransformerRating() {
+  	public int getTransformerRating() {
   		return this.strength + this.intelligence + this.speed + this.endurance + this.firepower;
   	}
 

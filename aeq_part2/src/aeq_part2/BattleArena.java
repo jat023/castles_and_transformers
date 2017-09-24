@@ -13,7 +13,7 @@ public class BattleArena {
 	    ArrayList<Transformer> autobotList = new ArrayList<Transformer>();
 	    ArrayList<Transformer> decepticonList = new ArrayList<Transformer>();
 
-	    for (int i = 0; i < 9; i++) {
+	    for (int i = 0; i < 8; i++) {
 	    		Transformer checkTransformerTeam = transformersRoster.get(i);
 
 	    		if (checkTransformerTeam.getTeam() == "A") {
@@ -44,10 +44,10 @@ public class BattleArena {
 
 	    		// Create Transformer objects
 	    Transformer optimisPrime = new Transformer("Optimis Prime", "A", 10, 10, 8, 10, 10, 10, 8, 10);
+	    Transformer silverbolt = new Transformer("Silverbolt", "A", 6, 8, 9, 8, 8, 8, 8, 5);
 	    Transformer omegaSupreme = new Transformer("Omega Supreme", "A", 10, 5, 3, 10, 7, 10, 10, 6);
 	    Transformer bumblebee = new Transformer("Bumblebee", "A", 2, 8, 4, 7, 7, 10, 1, 7);
 	    Transformer smokescreen = new Transformer("Smokescreen", "A", 4, 9, 7, 6, 6, 8, 7, 9);
-	    Transformer silverbolt = new Transformer("Silverbolt", "A", 6, 8, 9, 8, 8, 8, 8, 5);
 	    
 	    Transformer megatron = new Transformer("Megatron", "D", 10, 10, 4, 8, 10, 9, 10, 9);
 	    Transformer starscream = new Transformer("Starscream", "D", 7, 9, 10, 7, 9, 9, 8, 8);
@@ -56,25 +56,25 @@ public class BattleArena {
 	    
 	    Transformer predaking = new Transformer("Predaking", "D", 10, 5, 10, 8, 7, 9, 9, 8);
 	    Transformer overkill = new Transformer("Overkill", "D", 8, 5, 2, 8, 5, 6, 6, 5);
-	    Transformer blot = new Transformer("Blot", "D", 9, 2, 2, 10, 4, 10, 6, 5); 
 	    Transformer frenzy = new Transformer("Frenzy", "D", 3, 6, 3, 6, 5, 10, 9, 6);
-	    
+	    Transformer blot = new Transformer("Blot", "D", 9, 2, 2, 10, 4, 10, 6, 5); 
 
 	    		// Add objects to ArrayList
 	    transformersRoster.add(optimisPrime);
-	    transformersRoster.add(omegaSupreme);
-	    transformersRoster.add(bumblebee);
-	    transformersRoster.add(smokescreen);
 	    transformersRoster.add(silverbolt);
+	    transformersRoster.add(omegaSupreme);
+	    //transformersRoster.add(bumblebee);
+	    transformersRoster.add(smokescreen);
 	    
-	    transformersRoster.add(overkill);
-	    //transformersRoster.add(starscream);
-	    //transformersRoster.add(galvatron);
-	    transformersRoster.add(blot);
-	    transformersRoster.add(frenzy);
 	    //transformersRoster.add(megatron);
+	    transformersRoster.add(starscream);
 	    //transformersRoster.add(sixshot);
-	    transformersRoster.add(predaking);
+	    transformersRoster.add(galvatron);
+
+	    //transformersRoster.add(predaking);
+	    transformersRoster.add(overkill);
+	    transformersRoster.add(frenzy);
+	    //transformersRoster.add(blot);
 
 	    return transformersRoster;
 	}
@@ -115,11 +115,11 @@ public class BattleArena {
 	}
 
 	/**
-	 * The Battle between Autobots and Decepticons have begun!
+	 * The battle between Autobots and Decepticons have begun!
 	 * @param autobots
 	 * @param decepticons
 	 */
-	private static void battle(ArrayList<Transformer> autobots, ArrayList<Transformer> decepticons) {
+	private static int battle(ArrayList<Transformer> autobots, ArrayList<Transformer> decepticons) {
 		// Step 1: Determine the shorter list, if any; this determines number of battles
 		ArrayList<Transformer> autoList = autobots;
 		ArrayList<Transformer> deceList = decepticons;
@@ -137,6 +137,13 @@ public class BattleArena {
 		}
 			
 		// Step 2: For loop, create matches based on their indices since they're sorted by rank
+		// Step 3: Determine victor via various requirements
+				// vs Optimis Prime or PredaKing --> opponent is always destroyed
+				// >= 4 for Courage or >=3 for strength
+				// >= 3 points for Skill
+				// highest overall rating is the winner
+				// both destroyed if a tie ensues
+			// if OP or Predaking fight >>> everyone dies
 		
 		Transformer opponentA;
 		Transformer opponentD;
@@ -147,25 +154,68 @@ public class BattleArena {
 			opponentD = decepticons.get(b);
 			
 			if (opponentA.getName() == "Optimis Prime" && opponentD.getName() == "Predaking") {
-			
+				
 				displayBattleResults(numBattles, "All bots perished.", survivingMembers);
+					// all bots have died, no need to continue
+				return 0;
+			} else if (opponentA.getName() == "Optimis Prime") {
+				opponentD.isNowDestroyed();
+				System.out.print(opponentD.getName() + " has been defeated by " + opponentA.getName() + ".\n");
+			} else if (opponentD.getName() == "Predaking") {
+				opponentA.isNowDestroyed();
+				System.out.print(opponentA.getName() + " has been defeated by " + opponentD.getName() + ".\n");
+			} else {
+				
+			// first conditional is for courage and strength
+				if ((opponentA.getCourage() - opponentD.getCourage() >= 4) && (opponentA.getStrength() - opponentD.getStrength() >= 3)) {
+					// autobot has scared his opponent away
+					opponentD.isNowDestroyed();
+					System.out.print(opponentA.getName() + " has scared away " + opponentD.getName() + ".\n");
+				} else if ((opponentD.getCourage() - opponentA.getCourage() >= 4) && (opponentD.getStrength() - opponentA.getStrength() >= 3)) {
+					// decepticon has scared his opponent away
+					opponentA.isNowDestroyed();
+					System.out.print(opponentD.getName() + " has scared away " + opponentA.getName() + ".\n");
+					
+			// second conditional is for test of skill
+				} else if ((opponentA.getSkill() - opponentD.getSkill() >= 3)) {
+					opponentD.isNowDestroyed();
+					System.out.print(opponentA.getName() + " has bested " + opponentD.getName() + " in skills.\n");
+				} else if ((opponentD.getSkill() - opponentA.getSkill() >= 3)) {
+					opponentA.isNowDestroyed();
+					System.out.print(opponentD.getName() + " has bested " + opponentA.getName() + " in skills.\n");
+				} else  {
+			// third conditional just looks at their rating based on 5 stats
+					int ratingA = opponentA.getTransformerRating();
+					int ratingD = opponentD.getTransformerRating();
+					
+					if (ratingA == ratingD) {
+						opponentD.isNowDestroyed();
+						opponentA.isNowDestroyed();
+						System.out.print(opponentA.getName() + " has equal rating to " + opponentD.getName() + " . Both perished.\n");
+					} else if (ratingA > ratingD) {
+						opponentD.isNowDestroyed();
+						System.out.print(opponentA.getName() + " has won with a higher rating than " + opponentD.getName() + ".\n");
+					} else {
+						opponentA.isNowDestroyed();
+						System.out.print(opponentD.getName() + " has won with a higher rating than " + opponentD.getName() + ".\n");
+					}
+				}
 			}
 		}
+
 		
-		// Step 3: Determine victor via various requirements
-				// vs Optimis Prime or PredaKing --> opponent is always destroyed
-				// >= 4 for Courage or >=3 for strength
-				// >= 3 points for Skill
-				// highest overall rating is the winner
-				// both destroyed if a tie ensues
-		// if OP or Predaking fight >>> everyone dies
-		
-		// return numBattles
-		// return winning team (most battles won/opponents destroyed)
-		// return survivors of losing team
-	    
+		// display number of battles (numBattles)
+		// display winning team (most battles won/opponents destroyed)
+		// list the survivors of losing team
+	    return 1;
 	}
 	
+	/**
+	 * Displays the statistics of the battle
+	 * @param numberOfBattles
+	 * @param winningTeam
+	 * @param survivors
+	 */
 	private static void displayBattleResults(int numberOfBattles, String winningTeam, ArrayList<Transformer> survivors) {
 		System.out.print("There were a total of " + numberOfBattles + " battles." + "\n");
 		System.out.print(winningTeam + "\n");
