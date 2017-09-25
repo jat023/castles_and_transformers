@@ -13,7 +13,7 @@ Land assessment can be done by manually entering your integer array "map" in the
 
 
 
-**Part 2: War on Cybertron** <br />
+**Part 2: War on Cybertron** <br /><br />
 **Assumptions**<br />
 * A Transformer is created as a Class object and their tech specs are created as the Transformer class variables
 * A separate variable ("destroyed") is used to determine whether a Transformer has been destroyed
