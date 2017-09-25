@@ -19,9 +19,9 @@ Transformers can be created manually in the console. Enter each bot with the for
 
 For cases where names include two words, do no include spaces.<br />
 Hit enter afte each bot has been entered. <br />
-Use "x" when done entering tranformers into the battle.
+Use "x" when done entering tranformers into the battle.<br />
 
-In the main function, use the function createTransformersManual() instead of createTransformers().
+In the *main* function, use ***createTransformersManual()*** instead of ***createTransformers()***.
 
 Hard-coded Tranformer objects may also be used. Some have already been included under the function createTransformers().
 
