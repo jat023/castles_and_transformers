@@ -1,19 +1,39 @@
 package aeq_part1;
 
+import java.util.Scanner;
+
 public class CastleBuilder {
 	private static int totalCastlesBuilt, totalCastlesOnPeaks, totalCastlesInValleys;
 	private static int[] landForBuilding;
 	private static int landSkipped;
 	
+	private static int[] createLandmass() {
+		
+		System.out.print("Enter land to have castles built on as a string of integers separated by one space\n");
+		
+	    	Scanner sc = new Scanner(System.in);
+		String input = sc.nextLine();
+		    
+		String[] parts = input.split(" ");
+		int[] userInput = new int[parts.length];
+		
+		for (int i = 0; i < parts.length; i++) {
+			userInput[i] = Integer.parseInt(parts[i]);
+		}
+	    sc.close();
+		return userInput;
+	}
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-	       // Here is our land for castle building
-	    int[] theEmptyLand = {1, 6, 6, 6, 1, 2, 3, 1, 1, 1, 1, 1, 5, 2, 4, 7, 3, 6, 3, 3, 6, 8, 8, 9, 4, 0, 4, 1, 6};
-	    // 1S 66P 1V 2S 3P 11111V 5P 2V 4S 7P 3V 6P 33V 6S 88S 9P 4S 0S
-	    // 17 land masses used for castles; 6 leftover and skipped
-	    // Total of 11 castles expected for this array, +1 at the beginning for a total of 12
+		
+	    		// Here is our land for castle building: hard coded input
+	    //int[] theEmptyLand = {1, 6, 6, 6, 1, 2, 3, 1, 1, 1, 1, 1, 5, 2, 4, 7, 3, 6, 3, 3, 6, 8, 8, 9, 4, 0, 4, 1, 6};
+	    //landForBuilding = theEmptyLand;
 	    
-	    landForBuilding = theEmptyLand;
+	    		// use this section for console input
+	    int[] userInput = createLandmass();
+
+	    landForBuilding = userInput;
 	    
 	    letsBuild();
 	    printResults();
