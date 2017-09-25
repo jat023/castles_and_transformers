@@ -13,7 +13,7 @@ public class BattleArena {
 	    ArrayList<Transformer> autobotList = new ArrayList<Transformer>();
 	    ArrayList<Transformer> decepticonList = new ArrayList<Transformer>();
 
-	    for (int i = 0; i < 12; i++) {
+	    for (int i = 0; i < 10; i++) {
 	    		Transformer checkTransformerTeam = transformersRoster.get(i);
 
 	    		if (checkTransformerTeam.getTeam() == "A") {
@@ -22,7 +22,6 @@ public class BattleArena {
 	    			decepticonList.add(checkTransformerTeam);
 	    		}
 	    }
-	    
 	    // Step 3: sort both arrays (team) based on the attribute of rank, a variable 
 	    			// within the Transformer class
 	    int dynamicAbListSize = autobotList.size();
@@ -48,6 +47,7 @@ public class BattleArena {
 	    Transformer silverbolt = new Transformer("Silverbolt", "A", 6, 8, 9, 8, 8, 8, 8, 5);
 	    Transformer omegaSupreme = new Transformer("Omega Supreme", "A", 10, 5, 3, 10, 7, 10, 10, 6);
 	    Transformer bumblebee = new Transformer("Bumblebee", "A", 2, 8, 4, 7, 7, 10, 1, 7);
+	    Transformer broadside = new Transformer("Broadside", "A", 8, 8, 9, 8, 6, 9, 7, 7);
 	    Transformer smokescreen = new Transformer("Smokescreen", "A", 4, 9, 7, 6, 6, 8, 7, 9);
 	    
 	    Transformer megatron = new Transformer("Megatron", "D", 10, 10, 4, 8, 10, 9, 10, 9);
@@ -66,14 +66,15 @@ public class BattleArena {
 	    transformersRoster.add(omegaSupreme);
 	    transformersRoster.add(bumblebee);
 	    transformersRoster.add(smokescreen);
+	    transformersRoster.add(broadside);
 	    
 	    transformersRoster.add(megatron);
 	    transformersRoster.add(starscream);
 	    transformersRoster.add(sixshot);
-	    transformersRoster.add(galvatron);
+	    //transformersRoster.add(galvatron);
 
-	    transformersRoster.add(predaking);
-	    transformersRoster.add(overkill);
+	    //transformersRoster.add(predaking);
+	    //transformersRoster.add(overkill);
 	    transformersRoster.add(frenzy);
 	    transformersRoster.add(blot);
 
@@ -210,7 +211,7 @@ public class BattleArena {
 					} else {
 						opponentA.isNowDestroyed();
 						decepticonWins = decepticonWins + 1;
-						System.out.print(opponentD.getName() + " has won with a higher rating than " + opponentD.getName() + ".\n");
+						System.out.print(opponentD.getName() + " has won with a higher rating than " + opponentA.getName() + ".\n");
 					}
 				}
 			}
@@ -256,7 +257,7 @@ public class BattleArena {
 	 * @param survivors
 	 */
 	private static void displayBattleResults(int numberOfBattles, String winningTeam, ArrayList<Transformer> survivors) {
-		System.out.print(winningTeam + "\n\n");
+		System.out.print("\n\n");
 		System.out.print("There were a total of " + numberOfBattles + " battles." + "\n");
 		System.out.print(winningTeam + "\n");
 		
