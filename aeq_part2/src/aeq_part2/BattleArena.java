@@ -1,38 +1,81 @@
+/**
+ * Creating of the roster of Transformers can be done manually (via console) or done
+ * through hardcoded values: See main method under "Step 1: Create master list of Transformers"
+ * 
+ * For console use --> Use method createTransformersManual()
+ * For hard-coded values --> Use method createTransformers
+ */
 package aeq_part2;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class BattleArena {
 
 	public static void main(String[] args) {
 		
 		  // Step 1: Create master list of transformers
+	    //ArrayList<Transformer> transformersRoster = createTransformersManual();
 	    ArrayList<Transformer> transformersRoster = createTransformers();
 	    
-	      // Step 2: separate the master list into arrays (teams) for Autobots vs Decepticons
+	      // Step 2: separate the list into different arrays (teams) for Autobots vs Decepticons
 	    ArrayList<Transformer> autobotList = new ArrayList<Transformer>();
 	    ArrayList<Transformer> decepticonList = new ArrayList<Transformer>();
 
-	    for (int i = 0; i < 10; i++) {
+	    for (int i = 0; i < transformersRoster.size(); i++) {
 	    		Transformer checkTransformerTeam = transformersRoster.get(i);
 
-	    		if (checkTransformerTeam.getTeam() == "A") {
+	    		if (checkTransformerTeam.getTeam().equals("A")) {
 	    			autobotList.add(checkTransformerTeam);
 	    		} else {
 	    			decepticonList.add(checkTransformerTeam);
 	    		}
 	    }
+	    
 	    // Step 3: sort both arrays (team) based on the attribute of rank, a variable 
 	    			// within the Transformer class
-	    int dynamicAbListSize = autobotList.size();
-	    int dynamicDcListSize = decepticonList.size();
 	    
-	    ArrayList<Transformer> rankedAutobotsList = sortByRank(dynamicAbListSize, autobotList);
-	    ArrayList<Transformer> rankedDecepticonsList = sortByRank(dynamicDcListSize, decepticonList);
+	    ArrayList<Transformer> rankedAutobotsList = sortByRank(autobotList.size(), autobotList);
+	    ArrayList<Transformer> rankedDecepticonsList = sortByRank(decepticonList.size(), decepticonList);
 
 	    // Step 4: let's battle!
 	    battle(rankedAutobotsList, rankedDecepticonsList);
 	}
+	
+	/**
+	 * Manual entering of Transformers information through console; utilizes Java scanner library
+	 */
+	private static ArrayList<Transformer> createTransformersManual() {
+	    ArrayList<Transformer> transformersRoster = new ArrayList<Transformer>();
+	    System.out.print("Enter transformer tech specs >> i.e. Bumblebee A 2 8 4 7 7 10 1 7\n");
+	    System.out.print("No spaces in names\n");
+		System.out.print("Type x when finished with adding transformers\n");
+    		Scanner sc = new Scanner(System.in);
+
+    				// creates a loop that reads user input of Tranformer tech specs until cancelled with "x"
+	    while (true) {
+			String input = sc.nextLine();
+			    
+		    if (input.equals("x")) {
+		    		System.out.print("Closing down input...\n");
+		    		break;
+		    } else {
+		    		String[] parts = input.split(" ");
+		    		
+		    			// creates object through Transformer class and adds to an ArrayList
+		    		Transformer temp = new Transformer(parts[0], parts[1], Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), 
+		    				Integer.parseInt(parts[4]), Integer.parseInt(parts[5]), Integer.parseInt(parts[6]), 
+		    				Integer.parseInt(parts[7]), Integer.parseInt(parts[8]), Integer.parseInt(parts[9]));
+		    		
+		    		transformersRoster.add(temp);
+		    }
+	    }
+	    
+	    sc.close();
+	   
+	    return transformersRoster;
+	}
+	
 	
 	/**
 	 * Creates Transformer objects and adds to an ArrayList
@@ -71,10 +114,10 @@ public class BattleArena {
 	    transformersRoster.add(megatron);
 	    transformersRoster.add(starscream);
 	    transformersRoster.add(sixshot);
-	    //transformersRoster.add(galvatron);
+	    transformersRoster.add(galvatron);
 
-	    //transformersRoster.add(predaking);
-	    //transformersRoster.add(overkill);
+	    transformersRoster.add(predaking);
+	    transformersRoster.add(overkill);
 	    transformersRoster.add(frenzy);
 	    transformersRoster.add(blot);
 
@@ -112,7 +155,7 @@ public class BattleArena {
 		      unsortedTeam.remove(currentIndex);
 		      dynamicAbListSize = unsortedTeam.size();
 		}
-
+	    
 	    return sortedTeam;
 	}
 
@@ -155,15 +198,15 @@ public class BattleArena {
 		String winningTeam;
 		
 		for (int b = 0; b < numBattles; b++) {
-			opponentA = autobots.get(b);
-			opponentD = decepticons.get(b);
+			opponentA = autoList.get(b);
+			opponentD = deceList.get(b);
 			
-			if (opponentA.getName() == "Optimis Prime" && opponentD.getName() == "Predaking") {
+			if (opponentA.getName() == "OptimisPrime" && opponentD.getName() == "Predaking") {
 				
 				displayBattleResults(numBattles, "All bots perished.", survivingMembers);
 					// all bots have died, no need to continue
 				return 0;
-			} else if (opponentA.getName() == "Optimis Prime") {
+			} else if (opponentA.getName() == "OptimisPrime") {
 				opponentD.isNowDestroyed();
 				autobotWins = autobotWins + 1;
 				System.out.print(opponentD.getName() + " has been defeated by " + opponentA.getName() + ".\n");
